@@ -5,6 +5,22 @@ require 'activesupport'
 require 'simple_gate/server_definition'
 
 class SimpleGate
+  # Connect through a list of gateways to the real server.
+  # Treats the last 'gateway' as the real server and the others as gateways.
+  # Needs at least one real gateway and a real server.
+  def through_to(*gateways) # :yields: ssh session
+    gateways = gateways.flatten
+    raise ArgumentError.new("Need at least 2 servers") if gateways.size < 2
+    target = ServerDefinition.find(gateways.pop)
+    through(gateways) do |gate|
+      target.connection_info do |host, user, options|
+        gate.ssh(host, user, options) do |session|
+          yield(session)
+        end
+      end
+    end
+  end
+
   # Most of the code was taken from Capistrano and adjusted to not need it.
   def through(*gateways)
     Thread.abort_on_exception = true
