@@ -1,0 +1,2 @@
+class SimpleGate
+end
