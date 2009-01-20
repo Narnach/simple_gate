@@ -1,0 +1,19 @@
+= SimpleGate
+
+This is a new project. This readme was auto-generated.
+
+== Recent changes
+
+=== Version 0.0.1
+* Created project
+
+== Installation
+=== From git
+From the project root, use rake to install.
+  git clone http://github.com/Narnach/simple_gate
+  cd simple_gate
+  rake install
+This will build the gem and install it for you.
+
+== About
+simple_gate was created by Wes Oldenbeuving. It is licensed under the MIT license.
