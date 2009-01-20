@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   # Files
   root_files     = %w[MIT-LICENSE README.rdoc Rakefile simple_gate.gemspec]
   bin_files      = %w[simple_gate]
-  lib_files      = %w[simple_gate]
+  lib_files      = %w[simple_gate simple_gate/server_definition]
   test_files     = %w[]
   spec_files     = %w[simple_gate]
   s.bindir       = "bin"
