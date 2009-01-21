@@ -21,7 +21,8 @@ class SimpleGate
     end
   end
 
-  # Most of the code was taken from Capistrano and adjusted to not need it.
+  # Most of the code was taken from Capistrano and then changed to work
+  # outside of Capistrano.
   def through(*gateways)
     Thread.abort_on_exception = true
     @open_connections ||= []
