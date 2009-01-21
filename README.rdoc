@@ -24,6 +24,21 @@ An example configuration for the servers 'foobar' and 'barfoo' would look be:
 
 == Recent changes
 
+=== Version 0.3.0
+
+* Readme now has a project description and updated credits for a bit of Capistrano code
+* Added mutator and documentation for ServerDefinition.servers
+* Updated comment to make more sense
+
+=== Version 0.2.0
+
+* Implemented SimpleGate#through_to, which establishes a real ssh session through a number of gateways
+
+=== Version 0.1.0
+
+* Removed simple_gate executable
+* Imported SimpleGate and ServerDefinition
+
 === Version 0.0.1
 * Created project
 
