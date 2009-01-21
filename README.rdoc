@@ -24,6 +24,11 @@ An example configuration for the servers 'foobar' and 'barfoo' would look be:
 
 == Recent changes
 
+=== Version 0.5.0
+
+* Added syntax explanation to gate_cp
+* Added gate_cp, which copies one local file to a remote destination
+
 === Version 0.4.1
 
 * simple_gate is now executable
