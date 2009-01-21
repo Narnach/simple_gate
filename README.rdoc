@@ -1,6 +1,26 @@
 = SimpleGate
 
-This is a new project. This readme was auto-generated.
+SimpleGate makes it possible to use net/ssh/gateway's capabilities in a simple to use way. The core gateway chaining logic was taken from Capistrano, but rewritten to work in an isolated library.
+
+My purpose for SimpleGate is to make it possible to write simple scripts that use gateway logic. This is useful if you have a server that is serveral hops inside a network.
+
+The original reason for creating SimpleGate is because I got tired of having to scp a rubygem through three hops every time I bumped the version and wanted to run it on a production server.
+
+SimpleGate is simple, meaning it does not (yet) plug into ~/.ssh. Because of this, you'll have to define ~/.servers.yml and add entries to configure your servers.
+
+An example configuration for the servers 'foobar' and 'barfoo' would look be:
+
+  ---
+  foobar:
+    address: "127.0.0.1"
+    username: "foo"
+    password: "bar
+    port: 22
+  barfoo:
+    address: "192.168.0.1"
+    username: "bar"
+    password: "foo
+    port: 22
 
 == Recent changes
 
@@ -16,4 +36,6 @@ From the project root, use rake to install.
 This will build the gem and install it for you.
 
 == About
-simple_gate was created by Wes Oldenbeuving. It is licensed under the MIT license.
+simple_gate was created by Wes Oldenbeuving. It is licensed under the MIT license. 
+
+SimpleGate#through is based on GatewayConnectionFactory#initialize, which is part of Jamis Buck's Capistrano and is also licensed under the MIT license.
