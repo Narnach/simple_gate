@@ -1,4 +1,16 @@
 #!/usr/bin/env ruby
+# Copy a single local file to a remote server.
+#   Syntax: gate_cp <server> <source_file> <target_file>
+#     server: a server listed in ~/.servers.yml and reachable by a
+#             series of connections described in ~/.servers.connections.yml
+#     source_file: filename or full path+filename of local source file
+#     target_file: filename or full path+filename of target file
+#
+#   Example: gate_cp foobar ~/foo.txt foo.txt
+#     This copies ~/foo.txt too the server foobar as foo.txt in the home dir
+#
+#   Example: gate_cp foobar foo.txt /tmp/bar.txt
+#     This copies the local file foo.txt too the server foobar as /tmp/foo.txt
 require 'simple_gate'
 require 'simple_gate/router'
 require 'net/sftp'
