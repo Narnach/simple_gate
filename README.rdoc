@@ -24,6 +24,10 @@ An example configuration for the servers 'foobar' and 'barfoo' would look be:
 
 == Recent changes
 
+=== Version 0.4.1
+
+* simple_gate is now executable
+
 === Version 0.4.0
 
 * Updated readme with version history for previous gem versions
