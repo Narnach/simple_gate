@@ -24,6 +24,11 @@ An example configuration for the servers 'foobar' and 'barfoo' would look be:
 
 == Recent changes
 
+=== Version 0.4.0
+
+* Updated readme with version history for previous gem versions
+* Added simple_gate executable to use SimpleGate's new Router class to find a path to a server and execute a command there.
+
 === Version 0.3.0
 
 * Readme now has a project description and updated credits for a bit of Capistrano code
