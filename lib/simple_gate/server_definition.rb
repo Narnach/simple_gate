@@ -62,6 +62,24 @@ class ServerDefinition
   end
 
   class << self
+    attr_accessor :servers
+
+    # Access the pre-configured servers. ~/.servers.yml is parsed for this.
+    # An example entry for the servers 'foobar' and 'barfoo' would look like:
+    #   ---
+    #   foobar:
+    #     address: "127.0.0.1"
+    #     username: "foo"
+    #     password: "bar
+    #     port: 22
+    #   barfoo:
+    #     address: "192.168.0.1"
+    #     username: "bar"
+    #     password: "foo
+    #     port: 22
+    #
+    # Since the parsed Hash of servers is cached, a value can be stored and
+    # the configuration file ignored if desired.
     def servers
       @servers ||= YAML.load_file(File.expand_path('~/.servers.yml'))
     end
