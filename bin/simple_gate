@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+# Use ~/.servers.connections.yml and ~/.servers.yml to find the fastest path
+# from the local server to a target server, establish a series of gateways
+# and then execute a command on the remote server.
+# Example of a ~/.servers.connections.yml file:
+#
+#   --- 
+#   local: 
+#   - foo
+#   foo: 
+#   - bar
+#   - baz
+#   bar: 
+#   - foobar
+#   - foobaz
+#   - barbaz
+#
+# The only 'special' node is local, which is the starting point for all
+# connections and not a real connection. All names are servers described in
+# ~/.servers.yml
+
+require 'simple_gate'
+require 'simple_gate/router'
+
+connections = YAML.load_file(File.expand_path('~/.servers.connections.yml'))
+from = 'local'
+target = ARGV.shift.to_s.strip
+
+cmd = ARGV.join(" ")
+if cmd.strip.size == 0
+  puts "No command was given"
+  exit 1
+end
+
+router = Router.new(connections)
+route = router.find(from, target)
+if route.nil?
+  puts "No route to #{target}"
+  exit 1
+end
+
+route.shift if route.first == 'local'
+
+if route.size==1
+  puts "No gateway needed to reach #{route.last}"
+  exit 2
+end
+
+puts "Executing '#{cmd}' in #{route.last}, using #{route.size - 1} gateway(s)"
+
+gate = SimpleGate.new
+gate.through_to(route) do |ssh|
+  puts ssh.exec!(cmd)
+end
+
