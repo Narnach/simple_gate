@@ -1,10 +1,10 @@
 Gem::Specification.new do |s|
   # Project
   s.name         = 'simple_gate'
-  s.summary      = "A new project"
-  s.description  = "A new project"
-  s.version      = '0.2.0'
-  s.date         = '2009-1-20'
+  s.summary      = "SimpleGate makes it possible to use net/ssh/gateway's capabilities in a simple to use way."
+  s.description  = s.summary
+  s.version      = '0.3.0'
+  s.date         = '2009-1-21'
   s.platform     = Gem::Platform::RUBY
   s.authors      = ["Wes Oldenbeuving"]
   s.email        = "narnach@gmail.com"
