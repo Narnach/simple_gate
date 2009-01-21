@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 
   # Files
   root_files     = %w[MIT-LICENSE README.rdoc Rakefile simple_gate.gemspec]
-  bin_files      = %w[simple_gate]
+  bin_files      = %w[simple_gate gate_cp]
   lib_files      = %w[simple_gate
                       simple_gate/server_definition
                       simple_gate/router]
