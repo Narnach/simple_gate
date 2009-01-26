@@ -2,10 +2,6 @@ require 'yaml'
 class ServerDefinition
   attr_accessor :host, :user, :options, :port, :password
   
-  def self.lookup(server)
-    
-  end
-  
   def initialize(host, options = {})
     @options = {:port => 22}.merge(options)
     self.host = host
