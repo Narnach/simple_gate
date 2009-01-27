@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
-# Use ~/.servers.connections.yml and ~/.servers.yml to find the fastest path
+# Syntax: simple_gate [-V] <server> <command>
+#   Finds a route to <server>, uses the neccesary gates to connect to it and
+#   executes <command> on that server. Set -V for verbose output.
+#
+# Uses ~/.servers.connections.yml and ~/.servers.yml to find the fastest path
 # from the local server to a target server, establish a series of gateways
 # and then execute a command on the remote server.
 # Example of a ~/.servers.connections.yml file:
@@ -21,6 +25,8 @@
 
 require 'simple_gate'
 require 'simple_gate/router'
+
+verbose = !ARGV.delete('-V').nil?
 
 connections = YAML.load_file(File.expand_path('~/.servers.connections.yml'))
 from = 'local'
@@ -46,9 +52,9 @@ if route.size==1
   exit 2
 end
 
-puts "Executing '#{cmd}' in #{route.last}, using #{route.size - 1} gateway(s)"
+puts "Executing '#{cmd}' in #{route.last}, using #{route.size - 1} gateway(s)" if verbose
 
-gate = SimpleGate.new
+gate = SimpleGate.new(:verbose=>verbose)
 gate.through_to(route) do |ssh|
   puts ssh.exec!(cmd)
 end
