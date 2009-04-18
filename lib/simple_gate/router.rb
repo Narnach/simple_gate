@@ -23,22 +23,20 @@ class Router
   # The graph must be acyclical or it will loop forever.
   def find(start, target)
     return [target] if start == target
-    if paths.has_key?(start)
-      # Map all possible paths to the target
-      routes = paths[start].map do |next_node|
-        find(next_node, target)
-      end
-      # Reduce the collection to the shortest path
-      shortest_route = routes.compact.inject(nil) {|shortest,possibility|
-        next possibility if shortest.nil?
-        possibility.size < shortest.size ? possibility : shortest
-      }
-      if shortest_route
-        return [start] + shortest_route
-      else
-        return nil
-      end
+    return nil unless paths.has_key?(start)
+    # Map all possible paths to the target
+    routes = paths[start].map do |next_node|
+      find(next_node, target)
     end
-    return nil
+    # Reduce the collection to the shortest path
+    shortest_route = routes.compact.inject(nil) {|shortest,possibility|
+      next possibility if shortest.nil?
+      possibility.size < shortest.size ? possibility : shortest
+    }
+    if shortest_route
+      return [start] + shortest_route
+    else
+      return nil
+    end
   end
 end
