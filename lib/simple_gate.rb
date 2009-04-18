@@ -17,11 +17,18 @@ class SimpleGate
 
   # Connect through a list of gateways to the real server.
   # Treats the last 'gateway' as the real server and the others as gateways.
-  # Needs at least one real gateway and a real server.
   def through_to(*gateways) # :yields: ssh session
     gateways = gateways.flatten
-    raise ArgumentError.new("Need at least 2 servers") if gateways.size < 2
+    raise ArgumentError.new("No target chosen") if gateways.size == 0
     target = ServerDefinition.find(gateways.pop)
+    if gateways.size == 0
+      target.connection_info do |host, user, options|
+        Net::SSH.start(host,user,options) do |session|
+          yield(session)
+        end
+      end
+      return
+    end
     through(gateways) do |gate|
       target.connection_info do |host, user, options|
         gate.ssh(host, user, options) do |session|
@@ -29,6 +36,7 @@ class SimpleGate
         end
       end
     end
+    nil
   end
 
   # Most of the code was taken from Capistrano and then changed to work
