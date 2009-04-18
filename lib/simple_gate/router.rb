@@ -20,14 +20,17 @@ class Router
   # A simple pathfinder. Returns a route as Array or nil.
   # Uses a very naieve depth-first recursive full-graph search to
   # find the shortest route.
-  # The graph must be acyclical or it will loop forever.
-  def find(start, target)
+  def find(start, target, current_route = [])
     return [target] if start == target
     return nil unless paths.has_key?(start)
-    # Map all possible paths to the target
-    routes = paths[start].map do |next_node|
-      find(next_node, target)
+
+    # Map all possible paths to the target.
+    # Skip nodes we have already visited
+    next_nodes = paths[start] - current_route
+    routes = next_nodes.map do |next_node|
+      find(next_node, target, current_route + [start])
     end
+
     # Reduce the collection to the shortest path
     shortest_route = routes.compact.inject(nil) {|shortest,possibility|
       next possibility if shortest.nil?
