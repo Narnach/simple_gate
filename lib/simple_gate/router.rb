@@ -33,10 +33,7 @@ class Router
       next possibility if shortest.nil?
       possibility.size < shortest.size ? possibility : shortest
     }
-    if shortest_route
-      return [start] + shortest_route
-    else
-      return nil
-    end
+    return [start] + shortest_route if shortest_route
+    nil
   end
 end
