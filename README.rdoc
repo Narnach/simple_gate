@@ -50,6 +50,17 @@ connection.
 
 == Recent changes
 
+=== Version 0.5.1
+
+* Updated readme and simple_gate documentation
+* Implemented infinite loop prevention code in Router#find
+* Cleaned up Router#find to be more readable
+* Added spec to show stack overflow occurs when a cyclical graph is used to
+  find a route
+* Added specs for Router#find
+* Added a -V (verbose) flag option to simple_gate
+* Removed empty method definition
+
 === Version 0.5.0
 
 * Added syntax explanation to gate_cp
