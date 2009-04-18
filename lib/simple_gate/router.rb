@@ -22,9 +22,7 @@ class Router
   # find the shortest route.
   # The graph must be acyclical or it will loop forever.
   def find(start, target)
-    if start == target
-      return [target]
-    end
+    return [target] if start == target
     if paths.has_key?(start)
       # Map all possible paths to the target
       routes = paths[start].map do |next_node|
