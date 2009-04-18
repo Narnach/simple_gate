@@ -1,10 +1,11 @@
 #!/usr/bin/env ruby
 # Copy a single local file to a remote server.
-#   Syntax: gate_cp <server> <source_file> <target_file>
+#   Syntax: gate_cp [-V] <server> <source_file> <target_file>
 #     server: a server listed in ~/.servers.yml and reachable by a
 #             series of connections described in ~/.servers.connections.yml
 #     source_file: filename or full path+filename of local source file
 #     target_file: filename or full path+filename of target file
+#     Set -V for verbose output.
 #
 #   Example: gate_cp foobar ~/foo.txt foo.txt
 #     This copies ~/foo.txt too the server foobar as foo.txt in the home dir
@@ -14,6 +15,8 @@
 require 'simple_gate'
 require 'simple_gate/router'
 require 'net/sftp'
+
+verbose = !ARGV.delete('-V').nil?
 
 connections = YAML.load_file(File.expand_path('~/.servers.connections.yml'))
 from = 'local'
@@ -37,11 +40,11 @@ route.shift if route.first == 'local'
 source = File.expand_path(ARGV.shift.to_s.strip)
 target = ARGV.shift.to_s.strip
 
-STDERR.puts "Connecting to #{route.last}, using #{route.size - 1} gateway(s)"
+STDERR.puts "Connecting to #{route.last}, using #{route.size - 1} gateway(s)" if verbose
 
-gate = SimpleGate.new
+gate = SimpleGate.new(:verbose=>verbose)
 gate.through_to(route) do |ssh|
-  STDERR.puts "Transferring: #{source} => #{target}"
+  STDERR.puts "Transferring: #{source} => #{target}" if verbose
   ssh.sftp.upload!(source, target)
 end
 
