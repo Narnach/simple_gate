@@ -46,18 +46,18 @@ class SimpleGate
     @open_connections ||= []
     @gateways = gateways.flatten.collect { |g| ServerDefinition.find(g) }
     tunnel = @gateways[0].connection_info do |host, user, connect_options|
-      puts "Setting up tunnel #{@gateways[0]}" if verbose?
+      STDERR.puts "Setting up tunnel #{@gateways[0]}" if verbose?
       gw = Net::SSH::Gateway.new(host, user, connect_options)
       @open_connections << gw
       gw
     end
     @gateway = (@gateways[1..-1]).inject(tunnel) do |tunnel, destination|
-      puts "Connecting to #{destination}" if verbose?
+      STDERR.puts "Connecting to #{destination}" if verbose?
       tunnel_port = tunnel.open(destination.host, (destination.port || 22))
       localhost_options = {:user => destination.user, :port => tunnel_port, :password => destination.password}
       local_host = ServerDefinition.new("127.0.0.1", localhost_options)
       local_host.connection_info do |host, user, connect_options|
-        puts "Connecting using local info #{local_host}" if verbose?
+        STDERR.puts "Connecting using local info #{local_host}" if verbose?
         gw = Net::SSH::Gateway.new(host, user, connect_options)
         @open_connections << gw
         gw

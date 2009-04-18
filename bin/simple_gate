@@ -34,20 +34,20 @@ target = ARGV.shift.to_s.strip
 
 cmd = ARGV.join(" ")
 if cmd.strip.size == 0
-  puts "No command was given"
+  STDERR.puts "No command was given"
   exit 1
 end
 
 router = Router.new(connections)
 route = router.find(from, target)
 if route.nil?
-  puts "No route to #{target}"
+  STDERR.puts "No route to #{target}"
   exit 1
 end
 
 route.shift if route.first == 'local'
 
-puts "Executing '#{cmd}' in #{route.last}, using #{route.size - 1} gateway(s)" if verbose
+STDERR.puts "Executing '#{cmd}' in #{route.last}, using #{route.size - 1} gateway(s)" if verbose
 
 gate = SimpleGate.new(:verbose=>verbose)
 gate.through_to(route) do |ssh|
