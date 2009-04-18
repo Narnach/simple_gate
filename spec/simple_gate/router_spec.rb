@@ -39,5 +39,15 @@ describe Router do
       router = Router.new({})
       router.find('start','target').should be_nil
     end
+
+    it 'should not cause a stack overflow in a cyclical route graph' do
+      router = Router.new({
+        'start' => %w[node],
+        'node' => %w[node target],
+      })
+      lambda {
+        router.find('start','target').should == %w[start node target]
+      }.should_not raise_error(SystemStackError)
+    end
   end
 end
