@@ -47,11 +47,6 @@ end
 
 route.shift if route.first == 'local'
 
-if route.size==1
-  puts "No gateway needed to reach #{route.last}"
-  exit 2
-end
-
 puts "Executing '#{cmd}' in #{route.last}, using #{route.size - 1} gateway(s)" if verbose
 
 gate = SimpleGate.new(:verbose=>verbose)

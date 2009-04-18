@@ -34,11 +34,6 @@ end
 
 route.shift if route.first == 'local'
 
-if route.size==1
-  puts "No gateway needed to reach #{route.last}"
-  exit 2
-end
-
 source = File.expand_path(ARGV.shift.to_s.strip)
 target = ARGV.shift.to_s.strip
 
