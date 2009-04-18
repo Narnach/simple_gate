@@ -50,6 +50,13 @@ connection.
 
 == Recent changes
 
+=== Version 0.5.2
+
+* Added -V verbose flag to gate_cp
+* Use STDERR for status messages. STDOUT is used to output SSH responses
+* Updated executables to support direct server connections
+* SimpleGate#through_to can connect directly to a server without gateways
+
 === Version 0.5.1
 
 * Updated readme and simple_gate documentation
