@@ -1,12 +1,21 @@
 = SimpleGate
 
-SimpleGate makes it possible to use net/ssh/gateway's capabilities in a simple to use way. The core gateway chaining logic was taken from Capistrano, but rewritten to work in an isolated library.
+SimpleGate makes it possible to use net/ssh/gateway's capabilities in a simple
+to use way. This makes it possible to write simple scripts that access servers that are located several hops inside a network.
 
-My purpose for SimpleGate is to make it possible to write simple scripts that use gateway logic. This is useful if you have a server that is serveral hops inside a network.
+The core gateway chaining logic was taken from Capistrano, but it has been
+rewritten to be useful in a more generic way than Capistrano allows.
 
-The original reason for creating SimpleGate is because I got tired of having to scp a rubygem through three hops every time I bumped the version and wanted to run it on a production server.
+SimpleGate's Router class makes it possible to automatically find a route
+through a maze of servers instead of having to manually define gateway chains.
+An added benefit is that a change to one server's connections no longer
+requires you to update all other servers if they relied on it as a gateway.
 
-SimpleGate is simple, meaning it does not (yet) plug into ~/.ssh. Because of this, you'll have to define ~/.servers.yml and add entries to configure your servers.
+SimpleGate is simple, meaning it does not (yet) do fancy things such as using
+~/.ssh. Because of this, you'll have to define ~/.servers.yml and add entries
+to configure your servers. To use the routing functionality used by the
+gate_cp and simple_gate executables, you have to define routes in
+~/.servers.connections.yml
 
 An example configuration for the servers 'foobar' and 'barfoo' would look be:
 
@@ -21,6 +30,23 @@ An example configuration for the servers 'foobar' and 'barfoo' would look be:
     username: "bar"
     password: "foo
     port: 22
+
+Example of a ~/.servers.connections.yml file:
+
+  ---
+  local:
+  - foo
+  foo:
+  - bar
+  - baz
+  bar:
+  - foobar
+  - foobaz
+  - barbaz
+
+All keys are names of servers defined in ~/.servers.yml. The only special node
+is "local", which is the starting point for all connections and not a real
+connection.
 
 == Recent changes
 
@@ -65,6 +91,6 @@ From the project root, use rake to install.
 This will build the gem and install it for you.
 
 == About
-simple_gate was created by Wes Oldenbeuving. It is licensed under the MIT license. 
+simple_gate was created by Wes Oldenbeuving. It is licensed under the MIT license.
 
 SimpleGate#through is based on GatewayConnectionFactory#initialize, which is part of Jamis Buck's Capistrano and is also licensed under the MIT license.

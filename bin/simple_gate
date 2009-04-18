@@ -8,20 +8,20 @@
 # and then execute a command on the remote server.
 # Example of a ~/.servers.connections.yml file:
 #
-#   --- 
-#   local: 
+#   ---
+#   local:
 #   - foo
-#   foo: 
+#   foo:
 #   - bar
 #   - baz
-#   bar: 
+#   bar:
 #   - foobar
 #   - foobaz
 #   - barbaz
 #
-# The only 'special' node is local, which is the starting point for all
-# connections and not a real connection. All names are servers described in
-# ~/.servers.yml
+# All keys are names of servers defined in ~/.servers.yml. The only special
+# node is "local", which is the starting point for all connections and not a
+# real connection.
 
 require 'simple_gate'
 require 'simple_gate/router'
