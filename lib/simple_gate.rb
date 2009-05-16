@@ -53,10 +53,12 @@ class SimpleGate
   #
   # @param [Array] *gateways A list of gateway server names that can be found using ServerDefinition.find(). Should have at least one server name.
   # @yieldparam [Net::SSH::Gateway] gateway Gateway object of the last tunnel endpoint.
+  # @raise [ArgumentError] When no gateways are chosen.
   def through(*gateways)
     Thread.abort_on_exception = true
     open_connections = []
     gateways = gateways.flatten.collect { |g| ServerDefinition.find(g) }
+    raise ArgumentError.new("No target chosen") if gateways.size == 0
     tunnel = gateways[0].connection_info do |host, user, connect_options|
       STDERR.puts "Setting up tunnel #{gateways[0]}" if verbose?
       gw = Net::SSH::Gateway.new(host, user, connect_options)
