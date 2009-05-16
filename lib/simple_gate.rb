@@ -5,19 +5,25 @@ require 'activesupport'
 require 'simple_gate/server_definition'
 
 class SimpleGate
+  # Initialize a new SimpleGate
+  # @param [Hash] options Hash with options to configure SimpleGate. Defaults to set :verbose to false.
   def initialize(options={})
     @options = {
       :verbose => false
     }.merge(options)
   end
 
+  # Is the verbose option turned on?
   def verbose?
     @options[:verbose]
   end
 
-  # Connect through a list of gateways to the real server.
-  # Treats the last 'gateway' as the real server and the others as gateways.
-  def through_to(*gateways) # :yields: ssh session
+  # Connect through a list of gateways to a target server.
+  # Treats the last 'gateway' as the target server and the others as gateways.
+  #
+  # @param [Array] *gateways A list of gateway server names that can be found using ServerDefinition.find(). Should have at least one server name.
+  # @yieldparam [Net::SSH::Connection::Session] session SSH Session to the target server.
+  def through_to(*gateways)
     gateways = gateways.flatten
     raise ArgumentError.new("No target chosen") if gateways.size == 0
     target = ServerDefinition.find(gateways.pop)
@@ -39,8 +45,14 @@ class SimpleGate
     nil
   end
 
+  # Establish a series of gateways and yields the last one created.
+  # Will automatically shut down gateway connections when the block closes.
+  #
   # Most of the code was taken from Capistrano and then changed to work
   # outside of Capistrano.
+  #
+  # @param [Array] *gateways A list of gateway server names that can be found using ServerDefinition.find(). Should have at least one server name.
+  # @yieldparam [Net::SSH::Gateway] gateway Gateway object of the last tunnel endpoint.
   def through(*gateways)
     Thread.abort_on_exception = true
     @open_connections ||= []
