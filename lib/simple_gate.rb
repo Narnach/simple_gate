@@ -23,6 +23,7 @@ class SimpleGate
   #
   # @param [Array] *gateways A list of gateway server names that can be found using ServerDefinition.find(). Should have at least one server name.
   # @yieldparam [Net::SSH::Connection::Session] session SSH Session to the target server.
+  # @raise [ArgumentError] When no gateways are chosen.
   def through_to(*gateways)
     gateways = gateways.flatten
     raise ArgumentError.new("No target chosen") if gateways.size == 0
