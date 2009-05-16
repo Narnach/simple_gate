@@ -55,15 +55,15 @@ class SimpleGate
   # @yieldparam [Net::SSH::Gateway] gateway Gateway object of the last tunnel endpoint.
   def through(*gateways)
     Thread.abort_on_exception = true
-    @open_connections ||= []
-    @gateways = gateways.flatten.collect { |g| ServerDefinition.find(g) }
-    tunnel = @gateways[0].connection_info do |host, user, connect_options|
-      STDERR.puts "Setting up tunnel #{@gateways[0]}" if verbose?
+    open_connections = []
+    gateways = gateways.flatten.collect { |g| ServerDefinition.find(g) }
+    tunnel = gateways[0].connection_info do |host, user, connect_options|
+      STDERR.puts "Setting up tunnel #{gateways[0]}" if verbose?
       gw = Net::SSH::Gateway.new(host, user, connect_options)
-      @open_connections << gw
+      open_connections << gw
       gw
     end
-    @gateway = (@gateways[1..-1]).inject(tunnel) do |tunnel, destination|
+    gateway = (gateways[1..-1]).inject(tunnel) do |tunnel, destination|
       STDERR.puts "Connecting to #{destination}" if verbose?
       tunnel_port = tunnel.open(destination.host, (destination.port || 22))
       localhost_options = {:user => destination.user, :port => tunnel_port, :password => destination.password}
@@ -71,13 +71,13 @@ class SimpleGate
       local_host.connection_info do |host, user, connect_options|
         STDERR.puts "Connecting using local info #{local_host}" if verbose?
         gw = Net::SSH::Gateway.new(host, user, connect_options)
-        @open_connections << gw
+        open_connections << gw
         gw
       end
     end
-    yield(@gateway)
+    yield(gateway)
   ensure
-    while g = @open_connections.pop
+    while g = open_connections.pop
       g.shutdown!
     end
   end
