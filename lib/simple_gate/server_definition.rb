@@ -1,7 +1,7 @@
 require 'yaml'
 class ServerDefinition
-  attr_accessor :host, :user, :options, :port, :password
-  
+  attr_accessor :host, :user, :port, :password, :auth_methods
+
   # Create a new ServerDefinition.
   #
   # @param [String] host Name of server.
@@ -10,26 +10,22 @@ class ServerDefinition
   # @option options [String] user SSH user
   # @option options [String] password SSH password
   def initialize(host, options = {})
-    @options = {:port => 22}.merge(options)
     self.host = host
-    self.user = @options[:user]
-    self.password = @options[:password]
-    self.port = @options[:port]
-  end
-  
-  def user=(user)
-    options[:user] = user
-    @user=user
+    self.user = options[:user]
+    self.password = options[:password]
+    self.port = options[:port] || 22
+    self.auth_methods = options[:auth_methods] || %w[password keyboard-interactive]
   end
 
-  def port=(port)
-    options[:port] = port
-    @port=port
-  end
-
-  def password=(password)
-    options[:password] = password
-    @password=password
+  # SSH options
+  # @return [Hash]
+  def options
+    {
+      :user => user,
+      :password => password,
+      :port => port,
+      :auth_methods => auth_methods
+    }
   end
 
   # Yield connection information.
@@ -39,15 +35,7 @@ class ServerDefinition
   # @see ServerDefinition#initialize
   # @see ServerDefinition#ssh_options
   def connection_info(&block)
-    block.call(host, user, options.merge(ssh_options))
-  end
-
-  # Default SSH options
-  # @return [Hash]
-  def ssh_options
-    {
-      :auth_methods => %w[password keyboard-interactive]
-    }
+    block.call(host, user, options)
   end
 
   # Represent server definition as URL-like string
@@ -55,14 +43,14 @@ class ServerDefinition
   def to_s
     "#{user}:#{'*' * password.to_s.size}@#{host}:#{port}"
   end
-  
+
   # Factory method that uses pre-defined server configurations.
   # @return [ServerDefinition]
   def self.lookup(server)
     server = servers[server]
-    new(server['address'],{ 
+    new(server['address'],{
       :user => server['username'],
-      :password => server['password'], 
+      :password => server['password'],
       :port => server['port']
     })
   end
@@ -75,7 +63,7 @@ class ServerDefinition
   def self.find(server)
     servers.has_key?(server) ? lookup(server) : parse(server)
   end
-  
+
   # Factory method that parses a connection string.
   # @param [String] ssh_string String formatted as "user:password@host:port"
   # @return [ServerDefinition]
