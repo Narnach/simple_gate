@@ -3,8 +3,8 @@ Gem::Specification.new do |s|
   s.name         = 'simple_gate'
   s.summary      = "SimpleGate makes it possible to use net/ssh/gateway's capabilities in a simple to use way."
   s.description  = s.summary
-  s.version      = '0.5.2'
-  s.date         = '2009-04-18'
+  s.version      = '0.5.3'
+  s.date         = '2009-05-16'
   s.platform     = Gem::Platform::RUBY
   s.authors      = ["Wes Oldenbeuving"]
   s.email        = "narnach@gmail.com"

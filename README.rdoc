@@ -50,6 +50,13 @@ connection.
 
 == Recent changes
 
+=== Version 0.5.3
+
+* Added yardoc documentation to all classes.
+* SimpleGate#through raises an error when no gates are chosen
+* SimpleGate#through uses local variables instead of instance variables
+* ServerDefinition#options is created on the fly
+
 === Version 0.5.2
 
 * Added -V verbose flag to gate_cp
