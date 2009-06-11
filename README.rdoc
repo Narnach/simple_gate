@@ -50,6 +50,11 @@ connection.
 
 == Recent changes
 
+=== Version 0.5.4
+
+* Fixed gemspec: add missing spec files and added missing gem dependencies
+* Updated Rakefile with ruby 1.9 workaround and a missing file spotter
+
 === Version 0.5.3
 
 * Added yardoc documentation to all classes.
