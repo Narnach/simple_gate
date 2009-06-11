@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
 
   # Requirements
   s.required_ruby_version = ">= 1.8.0"
-  s.add_dependency 'net/ssh', ">= 2.0.0"
-  s.add_dependency 'net/ssh/gateway', ">= 1.0.0"
+  s.add_dependency 'net-ssh', ">= 2.0.0"
+  s.add_dependency 'net-ssh-gateway', ">= 1.0.0"
   s.add_dependency 'activesupport', ">= 2.2.0"
 end
