@@ -42,8 +42,8 @@ task :diff do
   ].map {|pattern| Dir.glob(pattern)}.flatten.select{|f| File.file?(f)}
   missing_files = files - spec.files
   extra_files = spec.files - files
-  puts "Missing files:"
+  puts "File missing from the gemspec:"
   puts missing_files.join(" ")
-  puts "Extra files:"
+  puts "Extra files not (yet) in the gemspec:"
   puts extra_files.join(" ")
 end
