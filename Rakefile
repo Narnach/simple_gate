@@ -9,21 +9,41 @@ require 'rubygems'
 
 begin
   # Parse gemspec using the github safety level.
-  data = File.read('simple_gate.gemspec')
+  file = Dir['*.gemspec'].first
+  data = File.read(file)
   spec = nil
-  Thread.new { spec = eval("$SAFE = 3
-%s" % data)}.join
+  # FIXME: Lowered SAFE from 3 to 2 to work with Ruby 1.9 due to rubygems
+  # performing a require internally
+  Thread.new { spec = eval("$SAFE = 2\n%s" % data)}.join
 
   # Create the gem tasks
   Rake::GemPackageTask.new(spec) do |package|
     package.gem_spec = spec
   end
 rescue Exception => e
-  printf "WARNING: Error caught (%s): %s
-", e.class.name, e.message
+  printf "WARNING: Error caught (%s): %s\n%s", e.class.name, e.message, e.backtrace[0...5].map {|l| '  %s' % l}.join("\n")
 end
 
 desc 'Package and install the gem for the current version'
 task :install => :gem do
   system "sudo gem install -l pkg/%s-%s.gem" % [spec.name, spec.version]
+end
+
+desc 'Show files missing from gemspec'
+task :diff do
+  files = %w[
+    Rakefile
+    *README*
+    *LICENSE*
+    *.gemspec
+    bin/*
+    lib/**/*
+    spec/**/*
+  ].map {|pattern| Dir.glob(pattern)}.flatten.select{|f| File.file?(f)}
+  missing_files = files - spec.files
+  extra_files = spec.files - files
+  puts "Missing files:"
+  puts missing_files.join(" ")
+  puts "Extra files:"
+  puts extra_files.join(" ")
 end
