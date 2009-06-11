@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
                       simple_gate/router]
   test_files     = %w[]
   spec_files     = %w[simple_gate simple_gate/router]
-  other_files    = %w[spec/spec.opts spec/spec_helper.rb]
+  other_files    = %w[spec/spec_helper.rb]
   s.bindir       = "bin"
   s.require_path = "lib"
   s.executables  = bin_files
