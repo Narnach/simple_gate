@@ -17,12 +17,13 @@ Gem::Specification.new do |s|
                       simple_gate/server_definition
                       simple_gate/router]
   test_files     = %w[]
-  spec_files     = %w[simple_gate]
+  spec_files     = %w[simple_gate simple_gate/router]
+  other_files    = %w[spec/spec.opts spec/spec_helper.rb]
   s.bindir       = "bin"
   s.require_path = "lib"
   s.executables  = bin_files
   s.test_files   = test_files.map {|f| 'test/%s_test.rb' % f} + spec_files.map {|f| 'spec/%s_spec.rb' % f}
-  s.files        = root_files + bin_files.map {|f| 'bin/%s' % f} + lib_files.map {|f| 'lib/%s.rb' % f} + s.test_files
+  s.files        = root_files + bin_files.map {|f| 'bin/%s' % f} + lib_files.map {|f| 'lib/%s.rb' % f} + s.test_files + other_files
 
   # rdoc
   s.has_rdoc         = true
@@ -31,4 +32,7 @@ Gem::Specification.new do |s|
 
   # Requirements
   s.required_ruby_version = ">= 1.8.0"
+  s.add_dependency 'net/ssh', ">= 2.0.0"
+  s.add_dependency 'net/ssh/gateway', ">= 1.0.0"
+  s.add_dependency 'activesupport', ">= 2.2.0"
 end
